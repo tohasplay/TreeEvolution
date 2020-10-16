@@ -18,7 +18,7 @@ public class GameFactory {
     private Thread main = null;
     private boolean isStarted = false;
 
-    private GameFactory(Observer observer) {
+    private GameFactory() {
         world = World.getWorld();
         Tree tree = new Tree();
         tree.setWorld(world);
@@ -28,15 +28,17 @@ public class GameFactory {
 
         Seed seed = new Seed(new ActiveSeed(), factory.createGenotype(), 0, 300, new Point(50, 0));
         tree.add(seed);
-
-        world.attach(observer);
     }
 
-    public static GameFactory getGameFactory(Observer observer) {
+    public static GameFactory getGameFactory() {
         if (factory == null) {
-            factory = new GameFactory(observer);
+            factory = new GameFactory();
         }
         return factory;
+    }
+
+    public void attach(Observer observer) {
+        world.attach(observer);
     }
 
     public void start() {

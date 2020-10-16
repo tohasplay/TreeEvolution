@@ -2,36 +2,37 @@ package com.adea.evogame;
 
 import com.adea.evogame.notifyer.Observer;
 import com.adea.evogame.tree.Tree;
+import com.adea.evogame.utils.ColorPoint;
 import com.adea.evogame.utils.Point;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class EvoMain extends ApplicationAdapter implements Observer {
 
-    private GameFactory game;
+
+    GameFactory game;
 
     ShapeRenderer shapeRenderer;
-    Rectangle rectangle;
+
+    List<ColorPoint> render = new ArrayList<>();
 
     @Override
     public void create() {
-        game = GameFactory.getGameFactory(this);
-        rectangle = new Rectangle(0, 0, 5, 5);
+        game = GameFactory.getGameFactory();
+
+        game.attach(this);
 
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
 
     }
 
-    List<Tree> bio = new ArrayList<>();
-    List<Point> tmp = new ArrayList<>();
 
     @Override
     public void render() {
@@ -42,19 +43,20 @@ public class EvoMain extends ApplicationAdapter implements Observer {
         shapeRenderer.begin();
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
 
-        bio.clear();
-        bio.addAll(game.getWorld().getTrees());
 
-        synchronized (this) {
-            if (!bio.isEmpty())
-                for (Tree t : bio) {
-                    tmp.clear();
-                    tmp.addAll(t.planted());
-                    for (Point p : tmp) {
-                        shapeRenderer.setColor(t.getColor());
-                        shapeRenderer.rect(p.getX() * 10, (p.getY() + 1) * 10, 10, 10);
-                    }
-                }
+        try {
+            ArrayList<ColorPoint> points;
+            synchronized (this) {
+                points = new ArrayList<>(render);
+            }
+            for (ColorPoint p :
+                    points) {
+                Color color = p.getColor();
+                shapeRenderer.setColor(color);
+                shapeRenderer.rect(p.getX() * 10, (p.getY() + 1) * 10, 10, 10);
+            }
+        } catch(NullPointerException e){
+            e.printStackTrace();
         }
         shapeRenderer.end();
 
@@ -67,6 +69,13 @@ public class EvoMain extends ApplicationAdapter implements Observer {
 
     @Override
     public void update() {
-        render();
+        render.clear();
+        for (Tree tree :
+                game.getWorld().getTrees()) {
+            for (Point p :
+                    tree.planted()) {
+                render.add(p.copy(tree.getColor()));
+            }
+        }
     }
 }

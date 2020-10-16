@@ -5,6 +5,7 @@ import com.adea.evogame.notifyer.Observer;
 import com.adea.evogame.notifyer.Subject;
 import com.adea.evogame.tree.Tree;
 import com.adea.evogame.utils.Point;
+import com.badlogic.gdx.graphics.Color;
 import lombok.Data;
 
 import java.util.*;
@@ -79,6 +80,7 @@ public class World implements Subject {
 
         refreshSet();
 
+        notifyObservers();
     }
 
     Point chek = new Point();

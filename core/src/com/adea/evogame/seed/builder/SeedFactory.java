@@ -35,7 +35,8 @@ public class SeedFactory {
                                     .buildGenes(context.getGenes())
                                     .buildLocation(
                                             context.getLocation().getX() + command.getX(),
-                                            context.getLocation().getY() + command.getY()
+                                            context.getLocation().getY() + command.getY(),
+                                            parent.getColor()
                                     )
                                     .getSeed()
                     );

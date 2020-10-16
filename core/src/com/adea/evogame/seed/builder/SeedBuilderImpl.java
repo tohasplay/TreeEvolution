@@ -3,6 +3,7 @@ package com.adea.evogame.seed.builder;
 import com.adea.evogame.gene.Gene;
 import com.adea.evogame.seed.states.SeedState;
 import com.adea.evogame.utils.Point;
+import com.badlogic.gdx.graphics.Color;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class SeedBuilderImpl extends SeedBuilder {
     }
 
     @Override
-    SeedBuilder buildLocation(int x, int y) {
+    SeedBuilder buildLocation(int x, int y, Color color) {
         seed.setLocation(new Point(x, y));
         return this;
     }
