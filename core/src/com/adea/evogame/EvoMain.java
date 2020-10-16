@@ -17,7 +17,6 @@ public class EvoMain extends ApplicationAdapter implements Observer {
 
 
     GameFactory game;
-
     ShapeRenderer shapeRenderer;
 
     List<ColorPoint> render = new ArrayList<>();
@@ -25,7 +24,6 @@ public class EvoMain extends ApplicationAdapter implements Observer {
     @Override
     public void create() {
         game = GameFactory.getGameFactory();
-
         game.attach(this);
 
         shapeRenderer = new ShapeRenderer();
@@ -33,6 +31,8 @@ public class EvoMain extends ApplicationAdapter implements Observer {
 
     }
 
+
+    ArrayList<ColorPoint> points = new ArrayList<>();
 
     @Override
     public void render() {
@@ -45,10 +45,8 @@ public class EvoMain extends ApplicationAdapter implements Observer {
 
 
         try {
-            ArrayList<ColorPoint> points;
-            synchronized (this) {
-                points = new ArrayList<>(render);
-            }
+            points.clear();
+            points.addAll(render);
             for (ColorPoint p :
                     points) {
                 Color color = p.getColor();

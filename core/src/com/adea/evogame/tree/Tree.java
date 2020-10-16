@@ -14,7 +14,7 @@ import java.util.List;
 public class Tree implements Biologic {
 
     private static final int MAX_LIFECYCLE = 90;
-    private static final int ENERGY_CONSUMING = 15;
+    private static final int ENERGY_CONSUMING = 17;
     private int lifeCycle = 0;
 
     private final List<Biologic> seeds = new ArrayList<>();
